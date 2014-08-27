@@ -42,41 +42,52 @@ class common_Tests(unittest.TestCase):
         
         self.assertIn('Count', response)
         
+        # RESPONSE.Result = []
+        
         self.assertIn('Result', response)
-        self.assertIn('id', response['Result'][0])
-        self.assertIn('thumbnail', response['Result'][0])
-        self.assertIn('image', response['Result'][0])
-        self.assertIn('author', response['Result'][0])
-        self.assertIn('cameraName', response['Result'][0])
-        self.assertIn('resolution', response['Result'][0])
+        for result_item in response['Result']:
+            self.assertIn('id', result_item)
+            self.assertIn('thumbnail', result_item)
+            self.assertIn('image', result_item)
+            self.assertIn('author', result_item)
+            self.assertIn('cameraName', result_item)
+            self.assertIn('resolution', result_item)
         
-        self.assertIn('details', response['Result'][0])
-        self.assertIn('stylename', response['Result'][0]['details'])
-        self.assertIn('renderTime', response['Result'][0]['details'])
-        self.assertIn('hasHDR', response['Result'][0]['details'])
-        self.assertIn('canList', response['Result'][0]['details'])
-        self.assertIn('jobId', response['Result'][0]['details'])
-        self.assertIn('hdr_size', response['Result'][0]['details'])
-        self.assertIn('roomname', response['Result'][0]['details'])
-        self.assertIn('png_size', response['Result'][0]['details'])
-        self.assertIn('createTime', response['Result'][0]['details'])
-        self.assertIn('deList', response['Result'][0]['details'])
-        self.assertIn('canOpen', response['Result'][0]['details'])
-        self.assertIn('hasWatermark', response['Result'][0]['details'])
-        self.assertIn('colorname', response['Result'][0]['details'])
-        self.assertIn('Time', response['Result'][0]['details'])
-        self.assertIn('png_filename', response['Result'][0]['details'])
-        self.assertIn('reRender', response['Result'][0]['details'])
-        self.assertIn('hdr_filename', response['Result'][0]['details'])
-        self.assertIn('keyInfo', response['Result'][0]['details'])
-        
-        self.assertIn('modelInfos', response['Result'][0]['details'])
-        self.assertIn('modelname', response['Result'][0]['details']['modelInfos'][0])
-        self.assertIn('modelId', response['Result'][0]['details']['modelInfos'][0])
-        
-        self.assertIn('brandInfos', response['Result'][0]['details'])
-        self.assertIn('brandname', response['Result'][0]['details']['brandInfos'][0])
-        self.assertIn('brandpath', response['Result'][0]['details']['brandInfos'][0])
+            # RESPONSE.Result[0].details = {}
+            
+            self.assertIn('details', result_item)
+            self.assertIn('stylename', result_item['details'])
+            self.assertIn('renderTime', result_item['details'])
+            self.assertIn('hasHDR', result_item['details'])
+            self.assertIn('canList', result_item['details'])
+            self.assertIn('jobId', result_item['details'])
+            self.assertIn('hdr_size', result_item['details'])
+            self.assertIn('roomname', result_item['details'])
+            self.assertIn('png_size', result_item['details'])
+            self.assertIn('createTime', result_item['details'])
+            self.assertIn('deList', result_item['details'])
+            self.assertIn('canOpen', result_item['details'])
+            self.assertIn('hasWatermark', result_item['details'])
+            self.assertIn('colorname', result_item['details'])
+            self.assertIn('Time', result_item['details'])
+            self.assertIn('png_filename', result_item['details'])
+            self.assertIn('reRender', result_item['details'])
+            self.assertIn('hdr_filename', result_item['details'])
+            self.assertIn('keyInfo', result_item['details'])
+            
+            # RESPONSE.Result[0].details.modelInfos = []
+            
+            self.assertIn('modelInfos', response['Result'][0]['details'])
+            for modelinfo_item in result_item['details']['modelInfos'] :
+                self.assertIn('modelname', modelinfo_item)
+                self.assertIn('modelId', modelinfo_item)
+            
+            # RESPONSE.Result[0].details.brandInfos = []
+            
+            self.assertIn('brandInfos', response['Result'][0]['details'])
+            for brandinfo_item in result_item['details']['brandInfos'] :
+                self.assertIn('brandname', brandinfo_item)
+                self.assertIn('brandpath', brandinfo_item)
 
 
 def main():
