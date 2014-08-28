@@ -19,8 +19,11 @@ import unittest
 import json
 from urllib2 import urlopen
 
+from xxutils import getjson
+from xxutils import mustHaveProp
+
 #reload(sys)
-#sys.setdefaultencoding('utf8') 
+#sys.setdefaultencoding('utf8')
 
 KEY = "test"
 DOMAIN = "http://www.xuanran001.com/api"
@@ -32,7 +35,7 @@ URL = "%s/getdesignlist.html?key=%s" %(DOMAIN, KEY)
 
 class common_Tests(unittest.TestCase):
 
-    def test1(self):
+    def test_common(self):
         
         response = urlopen(URL)
 
@@ -57,7 +60,7 @@ class common_Tests(unittest.TestCase):
         
             # RESPONSE.Result[0].details = {}
             
-            mustHaveProp(self, 'details', result_item)
+            self.assertIn('details', result_item)
             mustHaveProp(self, 'stylename', result_item)
             mustHaveProp(self, 'renderTime', result_item)
             mustHaveProp(self, "hasHDR", result_item)
@@ -91,13 +94,49 @@ class common_Tests(unittest.TestCase):
                 self.assertIn('brandname', brandinfo_item)
                 self.assertIn('brandpath', brandinfo_item)
 
-    def test_ticket___(self):
-        print "Expect : result must have '21' in keyinfo."
+class param_Tests(unittest.TestCase):
+
+    # test limit param from 1 to 3.
+    def test_param_limit(self):
+        lmt = 1
+        while lmt < 4:
+            url = URL + "&limit=" + str(lmt)
+            res = getjson(url)
+            self.assertTrue(len(res['Result']) == lmt)
+            lmt += 1
+    
+    def test_param_size_1(self):
+        msg = "Expect : pic size must be 480x360.\n"
+        url = URL + "&size=1"
+        msg += "URL : %s" % url
+        res = getjson(url)
+        isAllSmall = True
+        for item in res['Result'] :
+            msg += "Pic resolution is : %s\n" % item['resolution']
+            isAllSmall = isAllSmall and (item['resolution'] == "480x360")
+        self.assertTrue(isAllSmall, msg='{0}'.format(msg))
+
+    def test_param_size_2(self):
+        msg = "Expect : pic size must be 1200x900.\n"
+        url = URL + "&size=2"
+        msg += "URL : %s" % url
+        res = getjson(url)
+        isAllBig = True
+        for item in res['Result'] :
+            msg += "Pic resolution is : %s\n" % item['resolution']
+            isAllBig = isAllBig and (item['resolution'] == "480x360")
+        self.assertTrue(isAllBig, msg='{0}'.format(msg))
+
+
+class bug_Tests(unittest.TestCase):
+
+    def test_ticket10133(self):
+        msg = "Expect : result must have '21' in keyinfo.\n"
         url = URL + "&keyinfo=21"
-        print url
+        msg += "URL : %s" % url
         res = getjson(url)
         if res['Count'] is not 0 :
-            self.assertIn('21', res['Result'][0]['details']['keyInfo'])
+            self.assertIn('21', res['Result'][0]['details']['keyInfo'], msg='{0}'.format(msg))
 
     def test_ticket10128(self):
         msg = "Expect : result must have big and small pic.\n"
@@ -110,18 +149,6 @@ class common_Tests(unittest.TestCase):
             isAllBig = isAllBig and (item['resolution'] == "1200x900")
         self.assertFalse(isAllBig, msg='{0}'.format(msg))
 
-
-# get json object from url
-def getjson(url):
-    response = urlopen(url)
-    raw_data = response.read().decode('utf-8')
-    return json.loads(raw_data)
-
-# object must have property.
-def mustHaveProp(_self, name, item):
-    msg = "Expect : must have [%s] property\n" % name
-    msg += "ID : %s" % item['id']
-    _self.assertIn(name, item['details'], msg='{0}'.format(msg))
 
 
 def main():
