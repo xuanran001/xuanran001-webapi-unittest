@@ -57,25 +57,25 @@ class common_Tests(unittest.TestCase):
         
             # RESPONSE.Result[0].details = {}
             
-            self.assertIn('details', result_item)
-            self.assertIn('stylename', result_item['details'])
-            self.assertIn('renderTime', result_item['details'])
-            self.assertIn('hasHDR', result_item['details'])
-            self.assertIn('canList', result_item['details'])
-            self.assertIn('jobId', result_item['details'])
-            self.assertIn('hdr_size', result_item['details'])
-            self.assertIn('roomname', result_item['details'])
-            self.assertIn('png_size', result_item['details'])
-            self.assertIn('createTime', result_item['details'])
-            self.assertIn('deList', result_item['details'])
-            self.assertIn('canOpen', result_item['details'])
-            self.assertIn('hasWatermark', result_item['details'])
-            self.assertIn('colorname', result_item['details'])
-            self.assertIn('Time', result_item['details'])
-            self.assertIn('png_filename', result_item['details'])
-            self.assertIn('reRender', result_item['details'])
-            self.assertIn('hdr_filename', result_item['details'])
-            self.assertIn('keyInfo', result_item['details'])
+            mustHaveProp(self, 'details', result_item)
+            mustHaveProp(self, 'stylename', result_item)
+            mustHaveProp(self, 'renderTime', result_item)
+            mustHaveProp(self, "hasHDR", result_item)
+            mustHaveProp(self, 'canList', result_item)
+            mustHaveProp(self, 'jobId', result_item)
+            mustHaveProp(self, 'hdr_size', result_item)
+            mustHaveProp(self, 'roomname', result_item)
+            mustHaveProp(self, 'png_size', result_item)
+            mustHaveProp(self, 'createTime', result_item)
+            mustHaveProp(self, 'deList', result_item)
+            mustHaveProp(self, 'canOpen', result_item)
+            mustHaveProp(self, 'hasWatermark', result_item)
+            mustHaveProp(self, 'colorname', result_item)
+            mustHaveProp(self, 'Time', result_item)
+            mustHaveProp(self, 'png_filename', result_item)
+            mustHaveProp(self, 'reRender', result_item)
+            mustHaveProp(self, 'hdr_filename', result_item)
+            mustHaveProp(self, 'keyInfo', result_item)
             
             # RESPONSE.Result[0].details.modelInfos = []
             
@@ -100,15 +100,15 @@ class common_Tests(unittest.TestCase):
             self.assertIn('21', res['Result'][0]['details']['keyInfo'])
 
     def test_ticket10128(self):
-        print "Expect : result must have big and small pic."
+        msg = "Expect : result must have big and small pic.\n"
         url = URL + "&size=all"
-        print url
+        msg += "URL : %s" % url
         res = getjson(url)
         isAllBig = True
         for item in res['Result'] :
-            print "Pic resolution is : %s" % item['resolution']
+            msg += "Pic resolution is : %s" % item['resolution']
             isAllBig = isAllBig and (item['resolution'] == "1200x900")
-        self.assertFalse(isAllBig)
+        self.assertFalse(isAllBig, msg='{0}'.format(msg))
 
 
 # get json object from url
@@ -116,6 +116,13 @@ def getjson(url):
     response = urlopen(url)
     raw_data = response.read().decode('utf-8')
     return json.loads(raw_data)
+
+# object must have property.
+def mustHaveProp(_self, name, item):
+    msg = "Expect : must have [%s] property\n" % name
+    msg += "ID : %s" % item['id']
+    _self.assertIn(name, item['details'], msg='{0}'.format(msg))
+
 
 def main():
     unittest.main()
