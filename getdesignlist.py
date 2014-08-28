@@ -92,9 +92,12 @@ class common_Tests(unittest.TestCase):
                 self.assertIn('brandpath', brandinfo_item)
 
     def test_ticket___(self):
+        print "Expect : result must have '21' in keyinfo."
         url = URL + "&keyinfo=21"
+        print url
         res = getjson(url)
-        self.assertIn('21', res['Result'][0]['details']['keyInfo'])
+        if res['Count'] is not 0 :
+            self.assertIn('21', res['Result'][0]['details']['keyInfo'])
 
     def test_ticket10128(self):
         print "Expect : result must have big and small pic."
