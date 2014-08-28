@@ -22,6 +22,10 @@ from urllib2 import urlopen
 #reload(sys)
 #sys.setdefaultencoding('utf8') 
 
+KEY = "test"
+DOMAIN = "http://www.xuanran001.com/api"
+URL = "%s/getdesignlist.html?key=%s" %(DOMAIN, KEY)
+
 #
 # test
 #
@@ -30,9 +34,7 @@ class common_Tests(unittest.TestCase):
 
     def test1(self):
         
-        key = "test"
-        url = "http://www.xuanran001.com/api/getdesignlist.html?key=%s" % key
-        response = urlopen(url)
+        response = urlopen(URL)
 
         raw_data = response.read().decode('utf-8')
         response = json.loads(raw_data)
@@ -89,6 +91,28 @@ class common_Tests(unittest.TestCase):
                 self.assertIn('brandname', brandinfo_item)
                 self.assertIn('brandpath', brandinfo_item)
 
+    def test_ticket___(self):
+        url = URL + "&keyinfo=21"
+        res = getjson(url)
+        self.assertIn('21', res['Result'][0]['details']['keyInfo'])
+
+    def test_ticket10128(self):
+        print "Expect : result must have big and small pic."
+        url = URL + "&size=all"
+        print url
+        res = getjson(url)
+        isAllBig = True
+        for item in res['Result'] :
+            print "Pic resolution is : %s" % item['resolution']
+            isAllBig = isAllBig and (item['resolution'] == "1200x900")
+        self.assertFalse(isAllBig)
+
+
+# get json object from url
+def getjson(url):
+    response = urlopen(url)
+    raw_data = response.read().decode('utf-8')
+    return json.loads(raw_data)
 
 def main():
     unittest.main()
