@@ -105,10 +105,10 @@ class param_Tests(unittest.TestCase):
             self.assertTrue(len(res['Result']) == lmt)
             lmt += 1
     
-    def test_param_size_1(self):
+    def test_param_size_small(self):
         msg = "Expect : pic size must be 480x360.\n"
-        url = URL + "&size=1"
-        msg += "URL : %s" % url
+        url = URL + "&size=small"
+        msg += "URL : %s\n" % url
         res = getjson(url)
         isAllSmall = True
         for item in res['Result'] :
@@ -116,15 +116,15 @@ class param_Tests(unittest.TestCase):
             isAllSmall = isAllSmall and (item['resolution'] == "480x360")
         self.assertTrue(isAllSmall, msg='{0}'.format(msg))
 
-    def test_param_size_2(self):
+    def test_param_size_big(self):
         msg = "Expect : pic size must be 1200x900.\n"
-        url = URL + "&size=2"
-        msg += "URL : %s" % url
+        url = URL + "&size=big"
+        msg += "URL : %s\n" % url
         res = getjson(url)
         isAllBig = True
         for item in res['Result'] :
             msg += "Pic resolution is : %s\n" % item['resolution']
-            isAllBig = isAllBig and (item['resolution'] == "480x360")
+            isAllBig = isAllBig and (item['resolution'] == "1200x900")
         self.assertTrue(isAllBig, msg='{0}'.format(msg))
 
 
