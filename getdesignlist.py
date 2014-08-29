@@ -135,8 +135,11 @@ class bug_Tests(unittest.TestCase):
         url = URL + "&keyinfo=21"
         msg += "URL : %s" % url
         res = getjson(url)
+        info = []
+        info.append(res['Result'][0]['details']['keyInfo'])
+        info.append(res['Result'][0]['cameraName'])
         if res['Count'] is not 0 :
-            self.assertIn('21', res['Result'][0]['details']['keyInfo'], msg='{0}'.format(msg))
+            self.assertIn('21', info, msg='{0}'.format(msg))
 
     def test_ticket10128(self):
         msg = "Expect : result must have big and small pic.\n"
