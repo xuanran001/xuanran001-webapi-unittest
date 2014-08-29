@@ -63,10 +63,8 @@ class common_Tests(unittest.TestCase):
             self.assertIn('details', result_item)
             mustHaveProp(self, 'stylename', result_item, URL)
             mustHaveProp(self, 'renderTime', result_item, URL)
-            mustHaveProp(self, "hasHDR", result_item, URL)
             mustHaveProp(self, 'canList', result_item, URL)
             mustHaveProp(self, 'jobId', result_item, URL)
-            mustHaveProp(self, 'hdr_size', result_item, URL)
             mustHaveProp(self, 'roomname', result_item, URL)
             mustHaveProp(self, 'png_size', result_item, URL)
             mustHaveProp(self, 'createTime', result_item, URL)
@@ -80,16 +78,20 @@ class common_Tests(unittest.TestCase):
             mustHaveProp(self, 'hdr_filename', result_item, URL)
             mustHaveProp(self, 'keyInfo', result_item, URL)
             
+            mustHaveProp(self, "hasHDR", result_item, URL)
+            if result_item['details']['hasHDR'] is True :
+                mustHaveProp(self, 'hdr_size', result_item, URL)
+            
             # RESPONSE.Result[0].details.modelInfos = []
             
-            self.assertIn('modelInfos', response['Result'][0]['details'])
+            self.assertIn('modelInfos', result_item['details'])
             for modelinfo_item in result_item['details']['modelInfos'] :
                 self.assertIn('modelname', modelinfo_item)
                 self.assertIn('modelId', modelinfo_item)
             
             # RESPONSE.Result[0].details.brandInfos = []
             
-            self.assertIn('brandInfos', response['Result'][0]['details'])
+            self.assertIn('brandInfos', result_item['details'])
             for brandinfo_item in result_item['details']['brandInfos'] :
                 self.assertIn('brandname', brandinfo_item)
                 self.assertIn('brandpath', brandinfo_item)
