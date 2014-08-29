@@ -66,21 +66,23 @@ class common_Tests(unittest.TestCase):
             mustHaveProp(self, 'canList', result_item, URL)
             mustHaveProp(self, 'jobId', result_item, URL)
             mustHaveProp(self, 'roomname', result_item, URL)
-            mustHaveProp(self, 'png_size', result_item, URL)
             mustHaveProp(self, 'createTime', result_item, URL)
             mustHaveProp(self, 'deList', result_item, URL)
             mustHaveProp(self, 'canOpen', result_item, URL)
-            mustHaveProp(self, 'hasWatermark', result_item, URL)
             mustHaveProp(self, 'colorname', result_item, URL)
             mustHaveProp(self, 'Time', result_item, URL)
-            mustHaveProp(self, 'png_filename', result_item, URL)
             mustHaveProp(self, 'reRender', result_item, URL)
-            mustHaveProp(self, 'hdr_filename', result_item, URL)
             mustHaveProp(self, 'keyInfo', result_item, URL)
+            
+            mustHaveProp(self, 'hasWatermark', result_item, URL)
+            if result_item['details']['hasWatermark'] is False :
+                mustHaveProp(self, 'png_size', result_item, URL)
+                mustHaveProp(self, 'png_filename', result_item, URL)
             
             mustHaveProp(self, "hasHDR", result_item, URL)
             if result_item['details']['hasHDR'] is True :
                 mustHaveProp(self, 'hdr_size', result_item, URL)
+                mustHaveProp(self, 'hdr_filename', result_item, URL)
             
             # RESPONSE.Result[0].details.modelInfos = []
             
