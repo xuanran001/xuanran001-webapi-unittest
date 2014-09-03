@@ -29,7 +29,8 @@ def getjson(url):
     return json.loads(raw_data)
 
 # object must have property.
-def mustHaveProp(_self, name, item):
+def mustHaveProp(_self, name, item, url):
     msg = "Expect : must have [%s] property\n" % name
-    msg += "ID : %s" % item['id']
+    msg += "ID : %s\n" % item['id']
+    msg += "URL : %s" % url
     _self.assertIn(name, item['details'], msg='{0}'.format(msg))
