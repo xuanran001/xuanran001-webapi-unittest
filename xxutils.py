@@ -18,13 +18,20 @@ import unittest
 
 import json
 from urllib2 import urlopen
+from urllib2 import HTTPError
 
 #reload(sys)
 #sys.setdefaultencoding('utf8')
 
 # get json object from url
-def getjson(url):
-    response = urlopen(url)
+def getjson(_self, url):
+    try:
+        response = urlopen(url)
+    except HTTPError as e:
+        _self.fail(('Server return code : ', e.code))
+    except e:
+        _self.fail(('Unexpected exception thrown:', e))
+        
     raw_data = response.read().decode('utf-8')
     return json.loads(raw_data)
 

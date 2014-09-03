@@ -37,10 +37,7 @@ class common_Tests(unittest.TestCase):
 
     def test_common(self):
         
-        response = urlopen(URL)
-
-        raw_data = response.read().decode('utf-8')
-        response = json.loads(raw_data)
+        response = getjson(self, URL)
         
         self.assertIn('Success', response)
         self.assertEqual(response['Success'], True)
@@ -101,7 +98,7 @@ class param_Tests(unittest.TestCase):
         lmt = 1
         while lmt < 4:
             url = URL + "&limit=" + str(lmt)
-            res = getjson(url)
+            res = getjson(self, url)
             self.assertTrue(len(res['Result']) == lmt)
             lmt += 1
     
@@ -109,7 +106,7 @@ class param_Tests(unittest.TestCase):
         msg = "Expect : pic size must be 480x360.\n"
         url = URL + "&size=1"
         msg += "URL : %s" % url
-        res = getjson(url)
+        res = getjson(self, url)
         isAllSmall = True
         for item in res['Result'] :
             msg += "Pic resolution is : %s\n" % item['resolution']
@@ -120,7 +117,7 @@ class param_Tests(unittest.TestCase):
         msg = "Expect : pic size must be 1200x900.\n"
         url = URL + "&size=2"
         msg += "URL : %s" % url
-        res = getjson(url)
+        res = getjson(self, url)
         isAllBig = True
         for item in res['Result'] :
             msg += "Pic resolution is : %s\n" % item['resolution']
@@ -134,7 +131,7 @@ class bug_Tests(unittest.TestCase):
         msg = "Expect : result must have '21' in keyinfo.\n"
         url = URL + "&keyinfo=21"
         msg += "URL : %s" % url
-        res = getjson(url)
+        res = getjson(self, url)
         if res['Count'] is not 0 :
             self.assertIn('21', res['Result'][0]['details']['keyInfo'], msg='{0}'.format(msg))
 
@@ -142,7 +139,7 @@ class bug_Tests(unittest.TestCase):
         msg = "Expect : result must have big and small pic.\n"
         url = URL + "&size=all"
         msg += "URL : %s" % url
-        res = getjson(url)
+        res = getjson(self, url)
         isAllBig = True
         for item in res['Result'] :
             msg += "Pic resolution is : %s" % item['resolution']
