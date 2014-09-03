@@ -39,9 +39,5 @@ def getjson(_self, url):
 def mustHaveProp(_self, name, item, url):
     msg = "Expect : must have [%s] property\n" % name
     msg += "ID : %s\n" % item['id']
-<<<<<<< HEAD
-    msg += "URL : %s" % url
-=======
     msg += "URL : %s\n" % url
->>>>>>> 0341517ed633adaa98fbbd51c489b4bca7fa74c8
     _self.assertIn(name, item['details'], msg='{0}'.format(msg))
