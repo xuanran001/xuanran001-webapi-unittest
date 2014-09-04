@@ -110,7 +110,7 @@ class param_Tests(unittest.TestCase):
         msg = "Expect : pic size must be 480x360.\n"
         url = URL + "&size=small"
         msg += "URL : %s\n" % url
-        res = getjson(url)
+        res = getjson(self, url)
         isAllSmall = True
         for item in res['Result'] :
             msg += "Pic resolution is : %s\n" % item['resolution']
@@ -121,7 +121,7 @@ class param_Tests(unittest.TestCase):
         msg = "Expect : pic size must be 1200x900.\n"
         url = URL + "&size=big"
         msg += "URL : %s\n" % url
-        res = getjson(url)
+        res = getjson(self, url)
         isAllBig = True
         for item in res['Result'] :
             msg += "Pic resolution is : %s\n" % item['resolution']
@@ -135,7 +135,7 @@ class bug_Tests(unittest.TestCase):
         msg = "Expect : result must have '21' in keyinfo.\n"
         url = URL + "&keyinfo=21"
         msg += "URL : %s" % url
-        res = getjson(url)
+        res = getjson(self, url)
         info = []
         info.append(res['Result'][0]['details']['keyInfo'])
         info.append(res['Result'][0]['cameraName'])

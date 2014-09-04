@@ -28,7 +28,9 @@ def getjson(_self, url):
     try:
         response = urlopen(url)
     except HTTPError as e:
-        _self.fail(('Server return code : ', e.code))
+        msg = "URL : %s\n" % url
+        msg += 'Server return code : %s' % e.code
+        _self.fail(msg)
     except e:
         _self.fail(('Unexpected exception thrown:', e))
         
