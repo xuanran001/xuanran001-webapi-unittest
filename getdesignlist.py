@@ -144,7 +144,10 @@ class bug_Tests(unittest.TestCase):
 
     def test_ticket10128(self):
         msg = "Expect : result must have big and small pic.\n"
-        url = URL + "&size=all"
+        # [ticket:10256]-start, sometimes, They render big pic at the same time.
+        #url = URL + "&size=all"
+        url = URL + "&size=all&limit=20"
+        # [ticket:10256]-end
         msg += "URL : %s" % url
         res = getjson(self, url)
         isAllBig = True
