@@ -143,20 +143,27 @@ class bug_Tests(unittest.TestCase):
             self.assertIn('21', info, msg='{0}'.format(msg))
 
     def test_ticket10128(self):
+        # [ticket:10256] Sometimes, They render big pic at the same time.
+        # So we random select the image.
+        # get total count
+        res = getjson(self, URL)
+        count = res["Count"]
+
+        import random
+
         msg = "Expect : result must have big and small pic.\n"
-        # [ticket:10256]-start, sometimes, They render big pic at the same time.
-        #url = URL + "&size=all"
-        url = URL + "&size=all&limit=20"
-        # [ticket:10256]-end
-        msg += "URL : %s" % url
-        res = getjson(self, url)
+
         isAllBig = True
-        for item in res['Result'] :
-            msg += "Pic resolution is : %s" % item['resolution']
-            isAllBig = isAllBig and (item['resolution'] == "1200x900")
+        for x in range(5):
+            offset = random.randint(1, count)
+            url = "%s&size=all&limit=1&offset=%s" % (URL, offset)
+            res = getjson(self, url)
+            isAllBig = isAllBig and (res['Result'][0]['resolution'] == "1200x900")
+
+            msg += "URL : %s" % url
+            msg += "Pic resolution is : %s" % res['Result'][0]['resolution']
+
         self.assertFalse(isAllBig, msg='{0}'.format(msg))
-
-
 
 def main():
     unittest.main()
