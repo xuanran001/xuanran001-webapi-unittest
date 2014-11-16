@@ -20,6 +20,8 @@ import json
 from urllib2 import urlopen
 from urllib2 import HTTPError
 
+import logging
+
 #reload(sys)
 #sys.setdefaultencoding('utf8')
 
@@ -31,8 +33,8 @@ def getjson(_self, url):
         msg = "URL : %s\n" % url
         msg += 'Server return code : %s' % e.code
         _self.fail(msg)
-    except e:
-        _self.fail(('Unexpected exception thrown:', e))
+    #except e:
+    #    _self.fail(('Unexpected exception thrown:', e))
         
     raw_data = response.read().decode('utf-8')
     return json.loads(raw_data)
@@ -43,3 +45,7 @@ def mustHaveProp(_self, name, item, url):
     msg += "ID : %s\n" % item['id']
     msg += "URL : %s\n" % url
     _self.assertIn(name, item['details'], msg='{0}'.format(msg))
+
+def xlog(str):
+    logger = logging.getLogger("getdesignlist")
+    logger.debug( str )
