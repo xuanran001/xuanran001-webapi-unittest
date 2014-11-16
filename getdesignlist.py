@@ -119,6 +119,7 @@ class param_Tests(unittest.TestCase):
         url = URL + "&size=small"
         msg += "URL : %s\n" % url
         res = getjson(self, url)
+        self.assertIn('Result', res)
         isAllSmall = True
         for item in res['Result'] :
             msg += "Pic resolution is : %s\n" % item['resolution']
