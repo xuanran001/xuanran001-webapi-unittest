@@ -147,6 +147,7 @@ class bug_Tests(unittest.TestCase):
         url = URL + "&keyinfo=21"
         msg += "URL : %s" % url
         res = getjson(self, url)
+        self.assertIn('Result', res)
         info = []
         info.append(res['Result'][0]['details']['keyInfo'])
         info.append(res['Result'][0]['cameraName'])
