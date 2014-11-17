@@ -40,8 +40,8 @@ def getjson(_self, url):
     raw_data = response.read().decode('utf-8')
     json_obj = json.loads(raw_data)
 
-    _self.assertIn('Success', response)
-    _self.assertEqual(response['Success'], True, msg="{0}".format("response json : "+response))
+    _self.assertIn('Success', json_obj)
+    _self.assertEqual(json_obj['Success'], True, msg="{0}".format("response json : "+json_obj))
 
     return json_obj
 
