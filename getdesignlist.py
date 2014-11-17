@@ -44,9 +44,6 @@ class common_Tests(unittest.TestCase):
         
         response = getjson(self, URL)
         
-        self.assertIn('Success', response)
-        self.assertEqual(response['Success'], True)
-        
         self.assertIn('Count', response)
         
         # RESPONSE.Result = []

@@ -38,7 +38,12 @@ def getjson(_self, url):
         _self.fail(('Server timeout:', e.args))
         
     raw_data = response.read().decode('utf-8')
-    return json.loads(raw_data)
+    json_obj = json.loads(raw_data)
+
+    _self.assertIn('Success', response)
+    _self.assertEqual(response['Success'], True, msg="{0}".format("response json : "+response))
+
+    return json_obj
 
 # object must have property.
 def mustHaveProp(_self, name, item, url):
