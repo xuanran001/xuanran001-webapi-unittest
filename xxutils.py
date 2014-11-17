@@ -18,7 +18,6 @@ import unittest
 
 import json
 from urllib2 import urlopen
-from urllib2 import HTTPError
 
 import logging
 
@@ -29,12 +28,14 @@ import logging
 def getjson(_self, url):
     try:
         response = urlopen(url)
-    except HTTPError as e:
+    except urllib2.HTTPError as e:
         msg = "URL : %s\n" % url
         msg += 'Server return code : %s' % e.code
         _self.fail(msg)
-    #except e:
-    #    _self.fail(('Unexpected exception thrown:', e))
+    except urllib2.URLError as e:
+        _self.fail(('Unexpected exception thrown:', e.args))
+    except socket.timeout as e:
+        _self.fail(('Server timeout:', e.args))
         
     raw_data = response.read().decode('utf-8')
     return json.loads(raw_data)
