@@ -42,7 +42,7 @@ def getjson(_self, url):
     json_obj = json.loads(raw_data)
 
     _self.assertIn('Success', json_obj)
-    _self.assertEqual(json_obj['Success'], True, msg="{0}".format("response json : "+str(json_obj)))
+    _self.assertEqual(json_obj['Success'], True, msg="{0}".format("Success in json is not true, and response json : "+str(json_obj)))
 
     return json_obj
 
