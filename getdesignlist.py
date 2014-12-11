@@ -115,6 +115,7 @@ class param_Tests(unittest.TestCase):
         msg = "Expect : pic size must be 480x360.\n"
         url = URL + "&size=small"
         msg += "URL : %s\n" % url
+        xlog("URL: %s" % url)
         res = getjson(self, url)
         self.assertIn('Result', res)
         isAllSmall = True
@@ -142,14 +143,14 @@ class bug_Tests(unittest.TestCase):
         xlog( 'test_ticket10133' )
         msg = "Expect : result must have '21' in keyinfo.\n"
         url = URL + "&keyinfo=21"
-        msg += "URL : %s" % url
+        msg += "URL : %s\n" % url
         res = getjson(self, url)
         self.assertIn('Result', res)
         info = []
         info.append(res['Result'][0]['details']['keyInfo'])
         info.append(res['Result'][0]['cameraName'])
         if res['Count'] is not 0 :
-            self.assertIn('21', info, msg='{0}'.format(msg))
+            self.assertIn('21', info, msg="{0}\nBut result is [{1}]".format(msg, info))
 
     def test_ticket10128(self):
         xlog( 'test_ticket10128' )
