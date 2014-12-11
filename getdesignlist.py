@@ -145,12 +145,18 @@ class bug_Tests(unittest.TestCase):
         url = URL + "&keyinfo=21"
         msg += "URL : %s\n" % url
         res = getjson(self, url)
+
+        # if no data, jump over this test
+        if res['Count'] is 0 :
+            return True
+
         self.assertIn('Result', res)
-        info = []
-        info.append(res['Result'][0]['details']['keyInfo'])
-        info.append(res['Result'][0]['cameraName'])
-        if res['Count'] is not 0 :
-            self.assertIn('21', info, msg="{0}\nBut result is [{1}]".format(msg, info))
+
+        info = ""
+        info += res['Result'][0]['details']['keyInfo'] + "\n"
+        info += res['Result'][0]['cameraName']
+
+        self.assertIn('21', info, msg="{0}\nBut result is [{1}]".format(msg, info.encode('utf8')))
 
     def test_ticket10128(self):
         xlog( 'test_ticket10128' )
