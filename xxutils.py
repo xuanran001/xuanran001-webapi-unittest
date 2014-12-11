@@ -28,7 +28,7 @@ import logging
 # get json object from url
 def getjson(_self, url):
     try:
-        response = urlopen(url)
+        response = urlopen(url, timeout = 30)
     except urllib2.HTTPError as e:
         msg = "URL : %s\n" % url
         msg += 'Server return code : %s' % e.code
