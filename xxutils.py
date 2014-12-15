@@ -19,6 +19,7 @@ import unittest
 import json
 import urllib2
 from urllib2 import urlopen
+import socket
 
 import logging
 
