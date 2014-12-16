@@ -163,9 +163,7 @@ class bug_Tests(unittest.TestCase):
         # [ticket:10256] Sometimes, They render big pic at the same time.
         # So we random select the image.
         # get total count
-        res = getjson(self, URL)
-        self.assertIn('Result', res, msg='expect `Result` in JSON, bug result is [{0}]'.format(res))
-        count = res["Count"]
+        count = getcount(self)
 
         import random
 
@@ -183,6 +181,11 @@ class bug_Tests(unittest.TestCase):
             msg += "Pic resolution is : %s" % res['Result'][0]['resolution']
 
         self.assertFalse(isAllBig, msg='{0}'.format(msg))
+
+def getcount(_self):
+    res = getjson(_self, URL)
+    _self.assertIn('Result', res, msg='expect `Result` in JSON, bug result is [{0}]'.format(res))
+    return res["Count"]
 
 def main():
 
