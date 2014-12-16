@@ -182,6 +182,31 @@ class bug_Tests(unittest.TestCase):
 
         self.assertFalse(isAllBig, msg='{0}'.format(msg))
 
+    def test_ticket11285(self):
+        xlog('test_ticket11285')
+        count = getcount(self)
+        import random
+        msg = "Expect: result must not have water mark.\n"
+        has_watermark = False
+        for x in range(5):
+            offset = random.randint(1, count)
+            url = "%s&size=small&limit=1&offset=%s" % (URL, offset)
+            xlog( url )
+            res = getjson(self, url)
+
+            has_watermark = res['Result'][0]['details']['hasWatermark']
+
+            msg += "URL : %s" % url
+            msg += "has watermark : %s" % str(has_watermark)
+
+            if has_watermark == False:
+                continue
+
+            has_watermark = True
+            break
+
+        self.assertFalse(has_watermark, msg='{0}'.format(msg))
+
 def getcount(_self):
     res = getjson(_self, URL)
     _self.assertIn('Result', res, msg='expect `Result` in JSON, bug result is [{0}]'.format(res))
