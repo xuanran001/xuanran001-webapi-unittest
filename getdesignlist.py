@@ -145,7 +145,7 @@ class bug_Tests(unittest.TestCase):
 
     def tearDown(self):
         if self.ticketid != "":
-            replyticket(self.ticketid, "123")
+            replyticket(self.ticketid, self.ticketcomment)
 
     def test_ticket10133(self):
         xlog( 'test_ticket10133' )
@@ -192,7 +192,6 @@ class bug_Tests(unittest.TestCase):
 
     def test_ticket11285(self):
         xlog('test_ticket11285')
-        self.ticketid = "11547"
         count = getcount(self)
         import random
         msg = "Expect: result must not have water mark.\n"
@@ -212,6 +211,8 @@ class bug_Tests(unittest.TestCase):
                 continue
 
             has_watermark = True
+            self.ticketid = "11285"
+            self.ticketcomment = msg
             break
 
         self.assertFalse(has_watermark, msg='{0}'.format(msg))
