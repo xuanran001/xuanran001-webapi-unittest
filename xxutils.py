@@ -57,3 +57,6 @@ def mustHaveProp(_self, name, item, url):
 def xlog(str):
     logger = logging.getLogger("getdesignlist")
     logger.debug( str )
+
+def replyticket(ticketid, ticketcomment):
+    os.system("replyticket.sh \"%s\" \"%s\"" % (ticketid, ticketcomment))

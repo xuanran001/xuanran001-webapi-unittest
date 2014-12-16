@@ -22,6 +22,7 @@ from urllib2 import urlopen
 from xxutils import getjson
 from xxutils import mustHaveProp
 from xxutils import xlog
+from xxutils import replyticket
 
 import logging
 import sys
@@ -138,6 +139,13 @@ class param_Tests(unittest.TestCase):
 
 
 class bug_Tests(unittest.TestCase):
+    def setUp(self):
+        self.url = "xxdebug"
+        self.ticketid = ""
+
+    def tearDown(self):
+        if self.ticketid != "":
+            replyticket(self.ticketid, "123")
 
     def test_ticket10133(self):
         xlog( 'test_ticket10133' )
@@ -184,6 +192,7 @@ class bug_Tests(unittest.TestCase):
 
     def test_ticket11285(self):
         xlog('test_ticket11285')
+        self.ticketid = "11547"
         count = getcount(self)
         import random
         msg = "Expect: result must not have water mark.\n"
