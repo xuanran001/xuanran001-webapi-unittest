@@ -146,7 +146,7 @@ class bug_Tests(unittest.TestCase):
         self.ticketid = ""
 
         # get result count, used in all test.
-        res = getjson(_self, URL)
+        res = getjson(self, URL)
         self.assertIn('Result', res, msg='expect `Result` in JSON, bug result is [{0}]'.format(res))
         self.result_count = res["Count"]
 
