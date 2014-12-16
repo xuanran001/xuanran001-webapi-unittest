@@ -26,6 +26,7 @@ from xxutils import replyticket
 
 import logging
 import sys
+import random
 
 #reload(sys)
 #sys.setdefaultencoding('utf8')
@@ -139,9 +140,15 @@ class param_Tests(unittest.TestCase):
 
 
 class bug_Tests(unittest.TestCase):
+
     def setUp(self):
         self.url = "xxdebug"
         self.ticketid = ""
+
+        # get result count, used in all test.
+        res = getjson(_self, URL)
+        self.assertIn('Result', res, msg='expect `Result` in JSON, bug result is [{0}]'.format(res))
+        self.result_count = res["Count"]
 
     def tearDown(self):
         if self.ticketid != "":
@@ -170,16 +177,13 @@ class bug_Tests(unittest.TestCase):
         xlog( 'test_ticket10128' )
         # [ticket:10256] Sometimes, They render big pic at the same time.
         # So we random select the image.
-        # get total count
-        count = getcount(self)
 
-        import random
 
         msg = "Expect : result must have big and small pic.\n"
 
         isAllBig = True
         for x in range(5):
-            offset = random.randint(1, count)
+            offset = random.randint(1, self.result_count)
             url = "%s&size=all&limit=1&offset=%s" % (URL, offset)
             xlog( url )
             res = getjson(self, url)
@@ -192,12 +196,10 @@ class bug_Tests(unittest.TestCase):
 
     def test_ticket11285(self):
         xlog('test_ticket11285')
-        count = getcount(self)
-        import random
         msg = "Expect: result must not have water mark.\n"
         has_watermark = False
         for x in range(5):
-            offset = random.randint(1, count)
+            offset = random.randint(1, self.result_count)
             url = "%s&size=small&limit=1&offset=%s" % (URL, offset)
             xlog( url )
             res = getjson(self, url)
@@ -216,11 +218,6 @@ class bug_Tests(unittest.TestCase):
             break
 
         self.assertFalse(has_watermark, msg='{0}'.format(msg))
-
-def getcount(_self):
-    res = getjson(_self, URL)
-    _self.assertIn('Result', res, msg='expect `Result` in JSON, bug result is [{0}]'.format(res))
-    return res["Count"]
 
 def main():
 
