@@ -20,6 +20,7 @@ import json
 import urllib2
 from urllib2 import urlopen
 import socket
+import os
 
 import logging
 
@@ -59,4 +60,4 @@ def xlog(str):
     logger.debug( str )
 
 def replyticket(ticketid, ticketcomment):
-    os.system("replyticket.sh \"%s\" \"%s\"" % (ticketid, ticketcomment))
+    os.system("./replyticket.sh \"%s\" \"%s\"" % (ticketid, ticketcomment))
