@@ -13,16 +13,23 @@ UPDATETICKETPY="/tmp/updateticket.py"
 # prepare working env
 #
 
+# 192.168.2.21
+mkdir -p "/tmp/xxutils"
+XXUTILS="/tmp/xxutils/xxutils.sh"
+
 # load useful functions
 wget -q https://raw.githubusercontent.com/sp-chenyang/xxutils/master/xxutils.sh?$RANDOM -O $XXUTILS \
     && chmod a+x $XXUTILS \
     && . $XXUTILS
+if [ $? != 0 ]
+then
+    exit 1
+fi
 
-# create random dir for me, on 192.168.2.21
+# create working dir (random dir) for me, on 192.168.2.21
 JDIR=$( gettmpdir "xuanran001_webapi_unittest" )
 cd "$JDIR"
 CMDFILE="$JDIR/updateticket_rcmd.sh"
-XXUTILS="$JDIR/xxutils.sh"
 
 # prepare remote shell script
 echo "" > $CMDFILE
