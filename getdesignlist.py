@@ -153,14 +153,15 @@ class bug_Tests(unittest.TestCase):
     def tearDown(self):
         # reply relative ticket, when failed.
         if sys.exc_info() != (None, None, None):
-            print "replyticket(%s, %s)"%(self.ticketid, self.ticketcomment)
-            #replyticket(self.ticketid, self.ticketcomment)
+            print "replyticket(%s, %s)"%(self.ticketid, self.msg)
+            #replyticket(self.ticketid, self.msg)
 
     def test_ticket10133(self):
         xlog( 'test_ticket10133' )
-        msg = "Expect : result must have '21' in keyinfo.\n"
+        self.ticketid = '10133'
+        self.msg = "Expect : result must have '21' in keyinfo.\n"
         url = URL + "&keyinfo=21"
-        msg += "URL : %s\n" % url
+        self.msg += "URL : %s\n" % url
         res = getjson(self, url)
 
         # if no data, jump over this test
@@ -173,15 +174,16 @@ class bug_Tests(unittest.TestCase):
         info += res['Result'][0]['details']['keyInfo'] + "\n"
         info += res['Result'][0]['cameraName']
 
-        self.assertIn('21', info, msg="{0}\nBut result is [{1}]".format(msg, info.encode('utf8')))
+        self.assertIn('21', info, msg="{0}\nBut result is [{1}]".format(self.msg, info.encode('utf8')))
 
     def test_ticket10128(self):
         xlog( 'test_ticket10128' )
+        self.ticketid = '10128'
         # [ticket:10256] Sometimes, They render big pic at the same time.
         # So we random select the image.
 
 
-        msg = "Expect : result must have big and small pic.\n"
+        self.msg = "Expect : result must have big and small pic.\n"
 
         isAllBig = True
         for x in range(5):
@@ -191,15 +193,15 @@ class bug_Tests(unittest.TestCase):
             res = getjson(self, url)
             isAllBig = isAllBig and (res['Result'][0]['resolution'] == "1200x900")
 
-            msg += "URL : %s\n" % url
-            msg += "Pic resolution is : %s\n" % res['Result'][0]['resolution']
+            self.msg += "URL : %s\n" % url
+            self.msg += "Pic resolution is : %s\n" % res['Result'][0]['resolution']
 
-        self.assertFalse(isAllBig, msg='{0}'.format(msg))
+        self.assertFalse(isAllBig, msg='{0}'.format(self.msg))
 
     def test_ticket11285(self):
         xlog('test_ticket11285')
-        msg = "Expect: result must not have water mark.\n"
-        has_watermark = False
+        self.ticketid = "11285"
+        self.msg = "Expect: result must not have water mark.\n"
         for x in range(5):
             offset = random.randint(1, self.result_count)
             url = "%s&size=small&limit=1&offset=%s" % (URL, offset)
@@ -208,18 +210,11 @@ class bug_Tests(unittest.TestCase):
 
             has_watermark = res['Result'][0]['details']['hasWatermark']
 
-            msg += "URL : %s\n" % url
-            msg += "has watermark : %s\n" % str(has_watermark)
+            self.msg += "URL : %s\n" % url
+            self.msg += "has watermark : %s\n" % str(has_watermark)
 
-            if has_watermark == False:
-                continue
+            self.assertFalse(has_watermark, msg='{0}'.format(self.msg))
 
-            has_watermark = True
-            self.ticketid = "11285"
-            self.ticketcomment = msg
-            break
-
-        self.assertFalse(has_watermark, msg='{0}'.format(msg))
 
 def main():
 
