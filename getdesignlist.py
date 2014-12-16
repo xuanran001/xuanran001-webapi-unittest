@@ -151,8 +151,10 @@ class bug_Tests(unittest.TestCase):
         self.result_count = res["Count"]
 
     def tearDown(self):
-        if self.ticketid != "":
-            replyticket(self.ticketid, self.ticketcomment)
+        # reply relative ticket, when failed.
+        if sys.exc_info() != (None, None, None):
+            print "replyticket(%s, %s)"%(self.ticketid, self.ticketcomment)
+            #replyticket(self.ticketid, self.ticketcomment)
 
     def test_ticket10133(self):
         xlog( 'test_ticket10133' )
@@ -189,8 +191,8 @@ class bug_Tests(unittest.TestCase):
             res = getjson(self, url)
             isAllBig = isAllBig and (res['Result'][0]['resolution'] == "1200x900")
 
-            msg += "URL : %s" % url
-            msg += "Pic resolution is : %s" % res['Result'][0]['resolution']
+            msg += "URL : %s\n" % url
+            msg += "Pic resolution is : %s\n" % res['Result'][0]['resolution']
 
         self.assertFalse(isAllBig, msg='{0}'.format(msg))
 
@@ -206,8 +208,8 @@ class bug_Tests(unittest.TestCase):
 
             has_watermark = res['Result'][0]['details']['hasWatermark']
 
-            msg += "URL : %s" % url
-            msg += "has watermark : %s" % str(has_watermark)
+            msg += "URL : %s\n" % url
+            msg += "has watermark : %s\n" % str(has_watermark)
 
             if has_watermark == False:
                 continue
