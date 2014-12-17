@@ -1,7 +1,7 @@
 #!/bin/bash
 
-TICKETID=$1
-TICKETCOMMENT=$2
+TICKETID="$1"
+TICKETCOMMENT="$2"
 
 IP="192.168.1.153"
 UPDATETICKETURL="https://raw.githubusercontent.com/sp-chenyang/xxutils/master/updateticket.py?$RANDOM"
