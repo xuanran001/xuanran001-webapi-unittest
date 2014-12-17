@@ -33,13 +33,13 @@ CMDFILE="$JDIR/updateticket_rcmd.sh"
 
 # prepare remote shell script
 echo "" > $CMDFILE
-echo "curl $UPDATETICKETURL -o $UPDATETICKETPY" >> $CMDFILE
 
 #
 # begin to update a ticket
 #
 
-cmd="comment=\"$TICKETCOMMENT\""
+echo "curl $UPDATETICKETURL -o $UPDATETICKETPY" >> $CMDFILE
+echo "comment=\"$TICKETCOMMENT\"" >> $CMDFILE
 cmd="$cmd sudo python $UPDATETICKETPY"
 cmd="$cmd --id $TICKETID"
 cmd="$cmd --comment \"\$comment\""
