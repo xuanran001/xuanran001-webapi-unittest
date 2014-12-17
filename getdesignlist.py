@@ -200,7 +200,7 @@ class bug_Tests(unittest.TestCase):
     def test_ticket11285(self):
         xlog('test_ticket11285')
         self.ticketid = "11547"
-        self.msg = "\n测试`api/getdesignlist.html`接口，当参数`size=small`的时候，返回json中不应该包含水印图\n"
+        self.msg = "\n测试\`api/getdesignlist.html\`接口，当参数`size=small`的时候，返回json中不应该包含水印图\n"
         for x in range(5):
             offset = random.randint(1, self.result_count)
             url = "%s&size=small&limit=1&offset=%d" % (URL, offset)
