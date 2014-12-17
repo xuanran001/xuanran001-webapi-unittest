@@ -40,9 +40,9 @@ echo "curl $UPDATETICKETURL -o $UPDATETICKETPY" >> $CMDFILE
 #
 
 cmd="comment=\"$TICKETCOMMENT\""
-cmd="sudo python $UPDATETICKETPY"
+cmd="$cmd sudo python $UPDATETICKETPY"
 cmd="$cmd --id $TICKETID"
-cmd="$cmd --comment \$'\$comment'"
+cmd="$cmd --comment \"\$comment\""
 cmd="$cmd --author \"chenyang\""
 echo $cmd >> $CMDFILE
 
