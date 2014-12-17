@@ -9,6 +9,10 @@ UPDATETICKETURL="https://raw.githubusercontent.com/sp-chenyang/xxutils/master/up
 # 192.168.1.153
 UPDATETICKETPY="/tmp/updateticket.py"
 
+# debug param
+echo "[replyticket.sh] \$1 = [$1]"
+echo "[replyticket.sh] \$2 = [$2]"
+
 #
 # prepare working env
 #
@@ -37,6 +41,7 @@ echo "" > $CMDFILE
 #
 # begin to update a ticket
 #
+
 
 echo "curl $UPDATETICKETURL -o $UPDATETICKETPY" >> $CMDFILE
 echo "comment=\"$TICKETCOMMENT\"" >> $CMDFILE
