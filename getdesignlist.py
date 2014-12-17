@@ -28,8 +28,8 @@ import logging
 import sys
 import random
 
-#reload(sys)
-#sys.setdefaultencoding('utf8')
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 KEY = "test"
 DOMAIN = "http://www.xuanran001.com/api"
@@ -153,8 +153,7 @@ class bug_Tests(unittest.TestCase):
     def tearDown(self):
         # reply relative ticket, when failed.
         if sys.exc_info() != (None, None, None):
-            print "replyticket(%s, %s)"%(self.ticketid, self.msg)
-            #replyticket(self.ticketid, self.msg)
+            replyticket(self.ticketid, self.msg)
 
     def test_ticket10133(self):
         xlog( 'test_ticket10133' )
@@ -201,17 +200,18 @@ class bug_Tests(unittest.TestCase):
     def test_ticket11285(self):
         xlog('test_ticket11285')
         self.ticketid = "11285"
-        self.msg = "Expect: result must not have water mark.\n"
+        self.msg = "\n测试`api/getdesignlist.html`接口，当参数`size=small`的时候，返回json中不应该包含水印图\n"
         for x in range(5):
             offset = random.randint(1, self.result_count)
-            url = "%s&size=small&limit=1&offset=%s" % (URL, offset)
+            url = "%s&size=small&limit=1&offset=%d" % (URL, offset)
             xlog( url )
             res = getjson(self, url)
 
             has_watermark = res['Result'][0]['details']['hasWatermark']
 
-            self.msg += "URL : %s\n" % url
-            self.msg += "has watermark : %s\n" % str(has_watermark)
+            self.msg += "Request URL : \n{{{\n%s\n}}}\n" % url
+            self.msg += "返回json中是否包含水印图 : `%s`\n" % str(has_watermark)
+            self.msg += "Response : \n{{{\n%s\n}}}\n" % json.dumps(res, indent=4)
 
             self.assertFalse(has_watermark, msg='{0}'.format(self.msg))
 
