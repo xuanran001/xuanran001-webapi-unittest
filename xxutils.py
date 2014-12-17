@@ -60,7 +60,7 @@ def xlog(str):
     logger.debug( str )
 
 def replyticket(ticketid, ticketcomment):
-    cmd = "./replyticket.sh \"%s\" $'%s'" % (ticketid, ticketcomment)
+    cmd = "./replyticket.sh \"%s\" '%s'" % (ticketid, ticketcomment)
     
     #just debug
     print '[xxutils.py] replyticket cmd = ', cmd
