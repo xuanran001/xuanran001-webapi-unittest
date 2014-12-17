@@ -60,4 +60,4 @@ def xlog(str):
     logger.debug( str )
 
 def replyticket(ticketid, ticketcomment):
-    os.system("./replyticket.sh \"%s\" \"%s\"" % (ticketid, ticketcomment))
+    os.system("./replyticket.sh \"%s\" $'%s'" % (ticketid, ticketcomment))
