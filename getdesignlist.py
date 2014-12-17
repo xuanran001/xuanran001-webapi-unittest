@@ -201,7 +201,7 @@ class bug_Tests(unittest.TestCase):
         xlog('test_ticket11285')
         self.ticketid = "11547"
         self.msg = "\n==== bug描述 ====\n\n"
-        self.msg = "\n 测试\`api/getdesignlist.html\`接口，当参数\`size=small\`的时候，返回json中不应该包含水印图\n\n"
+        self.msg += "\n 测试\`api/getdesignlist.html\`接口，当参数\`size=small\`的时候，返回json中不应该包含水印图\n\n"
         for x in range(5):
             offset = random.randint(1, self.result_count)
             url = "%s&size=small&limit=1&offset=%d" % (URL, offset)
@@ -213,7 +213,8 @@ class bug_Tests(unittest.TestCase):
             self.msg += " 返回json中是否包含水印图，字段\`%s\`的值为\`%s\`\n\n" % ( "hasWatermark", str(has_watermark) )
             self.msg += "==== bug调试信息 ====\n\n"
             self.msg += " Request URL : \n{{{\n%s\n}}}\n\n" % url
-            self.msg += " Response : \n{{{\n%s\n}}}\n\n" % json.dumps(res, indent=4)
+            #self.msg += " Response : \n{{{\n%s\n}}}\n\n" % json.dumps(res, indent=4)
+            self.msg += " Response : \n{{{\n%s\n}}}\n\n" % json.dumps(res)
 
             self.assertFalse(has_watermark, msg='{0}'.format(self.msg))
 
