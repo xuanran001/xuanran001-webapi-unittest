@@ -39,9 +39,10 @@ echo "curl $UPDATETICKETURL -o $UPDATETICKETPY" >> $CMDFILE
 # begin to update a ticket
 #
 
+cmd="comment=\"$TICKETCOMMENT\""
 cmd="sudo python $UPDATETICKETPY"
 cmd="$cmd --id $TICKETID"
-cmd="$cmd --comment $'$TICKETCOMMENT'"
+cmd="$cmd --comment \$'\$comment'"
 cmd="$cmd --author \"chenyang\""
 echo $cmd >> $CMDFILE
 
