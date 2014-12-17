@@ -199,7 +199,7 @@ class bug_Tests(unittest.TestCase):
 
     def test_ticket11285(self):
         xlog('test_ticket11285')
-        self.ticketid = "11547"
+        self.ticketid = "11285"
         self.msg = "\n==== bug描述 ====\n\n"
         self.msg += "\n 测试\`api/getdesignlist.html\`接口，当参数\`size=small\`的时候，返回json中不应该包含水印图\n\n"
         for x in range(5):
