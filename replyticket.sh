@@ -41,7 +41,7 @@ echo "curl $UPDATETICKETURL -o $UPDATETICKETPY" >> $CMDFILE
 
 cmd="sudo python $UPDATETICKETPY"
 cmd="$cmd --id $TICKETID"
-cmd="$cmd --comment \"$TICKETCOMMENT\""
+cmd="$cmd --comment $'$TICKETCOMMENT'"
 cmd="$cmd --author \"chenyang\""
 echo $cmd >> $CMDFILE
 
