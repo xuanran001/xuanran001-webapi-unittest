@@ -50,7 +50,7 @@ def getjson(_self, url):
 
 def paste(obj):
     try:
-        data = "paste_data=%s&paste_lang=javascript&api_submit=true&mode=json"%json.dumps(obj)
+        data = "paste_data=%s&paste_lang=javascript&api_submit=true&mode=json"%json.dumps(obj, indent=4)
         response = urlopen("http://fpaste.org/", data = data, timeout = 30)
     except urllib2.HTTPError as e:
         msg = "URL : %s\n" % url
