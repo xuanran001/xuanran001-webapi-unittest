@@ -66,7 +66,7 @@ def paste(obj):
 
     print json_obj
 
-    return "http://fpaste.org/%s" % json_obj["id"]
+    return "http://fpaste.org/%s" % json_obj["result"]["id"]
 # object must have property.
 def mustHaveProp(_self, name, item, url):
     msg = "Expect : must have [%s] property\n" % name
