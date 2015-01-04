@@ -48,6 +48,24 @@ def getjson(_self, url):
 
     return json_obj
 
+def paste(obj):
+    try:
+        response = urlopen("http://fpaste.org/?paste_data=%s&paste_lang=javascript&api_submit=true&mode=json"%json.dumps(obj), timeout = 30)
+    except urllib2.HTTPError as e:
+        msg = "URL : %s\n" % url
+        msg += 'Server return code : %s' % e.code
+        print msg
+    except urllib2.URLError as e:
+        print 'Unexpected exception thrown:', e.args
+    except socket.timeout as e:
+        print 'Server timeout:', e.args
+        
+    raw_data = response.read().decode('utf-8')
+    json_obj = json.loads(raw_data)
+
+    print json_obj
+
+    return "http://fpaste.org/%s" % json_obj["id"]
 # object must have property.
 def mustHaveProp(_self, name, item, url):
     msg = "Expect : must have [%s] property\n" % name

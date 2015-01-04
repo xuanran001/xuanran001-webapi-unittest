@@ -23,6 +23,7 @@ from xxutils import getjson
 from xxutils import mustHaveProp
 from xxutils import xlog
 from xxutils import replyticket
+from xxutils import paste
 
 import logging
 import sys
@@ -226,7 +227,7 @@ class bug_Tests(unittest.TestCase):
             self.msg += "==== bug调试信息 ====\n\n"
             self.msg += " Request URL : \n{{{\n%s\n}}}\n\n" % url
             #self.msg += " Response : \n{{{\n%s\n}}}\n\n" % json.dumps(res, indent=4)
-            self.msg += " Response : \n{{{\n%s\n}}}\n\n" % json.dumps(res)
+            self.msg += " Response : \n{{{\n%s\n}}}\n\npaste bin: %s" % ( json.dumps(res), paste(res) )
 
             self.assertFalse(has_watermark, msg='{0}'.format(self.msg))
 
