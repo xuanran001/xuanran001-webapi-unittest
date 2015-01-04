@@ -142,6 +142,7 @@ class param_Tests(unittest.TestCase):
 class bug_Tests(unittest.TestCase):
 
     def setUp(self):
+        xlog( "setUp" )
         self.url = "xxdebug"
         self.ticketid = ""
 
@@ -149,6 +150,17 @@ class bug_Tests(unittest.TestCase):
         res = getjson(self, URL)
         self.assertIn('Result', res, msg='expect `Result` in JSON, bug result is [{0}]'.format(res))
         self.result_count = res["Count"]
+        xlog( "total count is : %d " % self.result_count )
+
+        res = getjson(self, URL + "&size=big")
+        self.assertIn('Result', res, msg='expect `Result` in JSON, bug result is [{0}]'.format(res))
+        self.big_result_count = res["Count"]
+        xlog( "total big count is : %d " % self.big_result_count )
+
+        res = getjson(self, URL + "&size=small")
+        self.assertIn('Result', res, msg='expect `Result` in JSON, bug result is [{0}]'.format(res))
+        self.small_result_count = res["Count"]
+        xlog( "total small count is : %d " % self.small_result_count )
 
     def tearDown(self):
         # reply relative ticket, when failed.
@@ -203,7 +215,7 @@ class bug_Tests(unittest.TestCase):
         self.msg = "\n==== bug描述 ====\n\n"
         self.msg += "\n 测试\`api/getdesignlist.html\`接口，当参数\`size=small\`的时候，返回json中不应该包含水印图\n\n"
         for x in range(5):
-            offset = random.randint(1, self.result_count)
+            offset = random.randint(1, self.small_result_count)
             url = "%s&size=small&limit=1&offset=%d" % (URL, offset)
             xlog( url )
             res = getjson(self, url)
