@@ -78,7 +78,7 @@ def mustHaveProp(_self, name, item, url):
 # object must have property.
 def mustHaveProp2(_self, prop, obj):
     msg = "Expect : must have [%s] property\n" % prop
-    msg += "Trace : %s\n" % json.dumps(_self.trace, indent=4, ensure_ascii=False)
+    msg += "Trace : %s\n" % json.dumps(_self.trace, indent=2, ensure_ascii=False)
     _self.assertIn(prop, obj, msg='{0}'.format(msg))
 
 def xlog(str):

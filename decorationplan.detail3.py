@@ -35,8 +35,7 @@ sys.setdefaultencoding('utf8')
 
 KEY = "test"
 DOMAIN = "http://www.xuanran001.com/api"
-ID = "a3960782-c012-4994-8afc-b2950d408769"
-URL = "%s/decorationplan/detail3.html?key=%s&id=%s&_1" %(DOMAIN, KEY, ID)
+URL = "%s/decorationplan/detail3.html?key=%s&id=" %(DOMAIN, KEY)
 
 #
 # test
@@ -47,98 +46,161 @@ class common_Tests(unittest.TestCase):
   def setUp(self):
     xlog("setUp...")
 
-    print (URL)
+  def test_random_project(self):
+    test_single_peojrct(self, "22fcb075-863a-4094-b5e8-0d364e773e3d")
+    test_single_peojrct(self, "df058f1f-2a5c-4f4c-b29c-334f79a29e43")
 
-    response = getjson(self, URL)
+def test_single_peojrct(self, sid):
+  url = URL + sid
+  print (url)
 
-    # RESPONSE.Result = {}
+  response = getjson(self, url)
 
-    self.assertIn("Result", response)
-    self.assertIn("projectinfo", response["Result"])
-    self.assertIn("shigong", response["Result"])
-    self.assertIn("Permission", response)
-    self.assertIn("Success", response)
-    self.assertTrue("Success", response)
+  # RESPONSE.Result = {}
 
-    self.projectinfo = response["Result"]["projectinfo"]
-    self.shigong = response["Result"]["shigong"]
+  self.assertIn("Result", response)
+  self.assertIn("projectinfo", response["Result"])
+  self.assertIn("shigong", response["Result"])
+  self.assertIn("yingzhuang", response["Result"])
+  self.assertIn("ruanzhuang", response["Result"])
+  self.assertIn("Permission", response)
+  self.assertIn("Success", response)
+  self.assertTrue("Success", response)
 
-    # Trace
-    self.trace = {
-      "Result" : {}
-    }
+  self.projectinfo = response["Result"]["projectinfo"]
+  self.shigong = response["Result"]["shigong"]
+  self.yingzhuang = response["Result"]["yingzhuang"]
+  self.ruanzhuang = response["Result"]["ruanzhuang"]
 
-  def test_projectinfo(self):
-    xlog("projectinfo")
-    
-    projectinfo = self.projectinfo
+  # Trace
+  self.trace = {
+    "Result" : {}
+  }
 
-    # RESPONSE.Result.projectinfo.roominfo = {}
+  test_projectinfo(self)
+  test_youhui(self)
+  test_shigong(self)
+  test_yingzhuang(self)
+  test_shejifang(self)
+  test_ruanzhuang(self)
 
-    self.assertIn("roominfo", projectinfo)
-    projectinfo_roominfo = projectinfo["roominfo"]
+def test_projectinfo(self):
+  xlog("projectinfo")
+  
+  projectinfo = self.projectinfo
 
-    self.assertIn("ceiling", projectinfo_roominfo)
-    self.assertIn("floor", projectinfo_roominfo)
+  # RESPONSE.Result.projectinfo.roominfo = {}
 
-    # RESPONSE.Result.projectinfo.roominfo.details = {}
+  self.assertIn("roominfo", projectinfo)
+  projectinfo_roominfo = projectinfo["roominfo"]
 
-    self.assertIn("details", projectinfo_roominfo)
-    details = projectinfo_roominfo["details"]
+  self.assertIn("ceiling", projectinfo_roominfo)
+  self.assertIn("floor", projectinfo_roominfo)
 
-    self.assertIn("wall", projectinfo_roominfo)
+  # RESPONSE.Result.projectinfo.roominfo.details = {}
 
-    self.assertIn("style", projectinfo)
-    self.assertIn("name", projectinfo)
+  self.assertIn("details", projectinfo_roominfo)
+  details = projectinfo_roominfo["details"]
+
+  self.assertIn("wall", projectinfo_roominfo)
+
+  self.assertIn("style", projectinfo)
+  self.assertIn("name", projectinfo)
 
 
-    #for result_item in response['Result']:
-    #    self.assertIn('id', result_item)
-    #
-    #    # RESPONSE.Result[0].details = {}
-    #    
-    #    self.assertIn('details', result_item)
-    #    mustHaveProp(self, 'stylename', result_item, URL)
+  #for result_item in response['Result']:
+  #    self.assertIn('id', result_item)
+  #
+  #    # RESPONSE.Result[0].details = {}
+  #    
+  #    self.assertIn('details', result_item)
+  #    mustHaveProp(self, 'stylename', result_item, URL)
 
-  def test_youhui(self):
-    xlog("youhui")
+def test_youhui(self):
+  xlog("youhui")
 
-  def test_shigong(self):
-    xlog("shigong")
-    self.trace["Result"]["shigong"] = {}
-    shigong = self.shigong
-    self.assertIn("totalprice", shigong)
-    self.assertIn("details", shigong)
-    shigong_details = shigong["details"]
-    self.trace["Result"]["shigong"]["details"] = {}
-    for name in shigong_details:
-      room = shigong_details[name]
-      self.trace["Result"]["shigong"]["details"][name] = {}
+def test_shigong(self):
+  xlog("shigong")
+  self.trace["Result"]["shigong"] = {}
+  shigong = self.shigong
+  self.assertIn("totalprice", shigong)
+  self.assertIn("details", shigong)
+  details = shigong["details"]
+  self.trace["Result"]["shigong"]["details"] = {}
+  for name in details:
+    room = details[name]
+    self.trace["Result"]["shigong"]["details"][name] = {}
+    if name == "自定义":
+      pass
+    elif name == "水电及其安装与杂项其他":
+      pass
+    else:
+      # Not empty
+      self.assertFalse(room == "")
+      mustHaveProp2(self, "totalprice", room)
+      mustHaveProp2(self, "detail", room)
+      room_detail = room["detail"]
+      self.trace["Result"]["shigong"]["details"][name]["detail"] = []
+      for gongcheng in room_detail:
+        self.trace["Result"]["shigong"]["details"][name]["detail"].append(gongcheng["name"]);
+        mustHaveProp2(self, "totalprice", gongcheng)
+        mustHaveProp2(self, "name", gongcheng)
+        mustHaveProp2(self, "unit", gongcheng)
+        if gongcheng["name"] == "贴墙面砖":
+          print json.dumps(self.trace, indent=2, ensure_ascii=False)
+          self.assertTrue(gongcheng["unit"] == "㎡")
+        self.trace["Result"]["shigong"]["details"][name]["detail"].pop();
+      self.trace["Result"]["shigong"]["details"][name].pop("detail")
+    self.trace["Result"]["shigong"]["details"].pop(name)
+  self.trace["Result"]["shigong"].pop("details")
+  self.trace["Result"].pop("shigong")
 
-      if name == "自定义":
-        pass
-      elif name == "水电及其安装与杂项其他":
-        pass
-      else:
-        # Not empty
-        self.assertFalse(room == "")
-        mustHaveProp2(self, "totalprice", room)
-        mustHaveProp2(self, "detail", room)
-        room_detail = room["detail"]
-        self.trace["Result"]["shigong"]["details"][name]["detail"] = []
-        for gongcheng in room_detail:
-          self.trace["Result"]["shigong"]["details"][name]["detail"].append(gongcheng["name"]);
-          mustHaveProp2(self, "totalprice", gongcheng)
-          mustHaveProp2(self, "name", gongcheng)
+def test_yingzhuang(self):
+  xlog("yingzhuang")
+  self.trace["Result"]["yingzhuang"] = {}
+  yingzhuang = self.yingzhuang
+  self.assertIn("totalprice", yingzhuang)
+  self.assertIn("details", yingzhuang)
+  details = yingzhuang["details"]
+  self.trace["Result"]["yingzhuang"]["details"] = {}
+  for name in details:
+    room = details[name]
+    self.trace["Result"]["yingzhuang"]["details"][name] = {}
+    self.assertFalse(room == "")
+    mustHaveProp2(self, "totalprice", room)
+    mustHaveProp2(self, "detail", room)
+    room_detail = room["detail"]
+    self.trace["Result"]["yingzhuang"]["details"][name]["detail"] = []
+    for shangpin in room_detail:
+      self.trace["Result"]["yingzhuang"]["details"][name]["detail"].append(shangpin["material"]);
+      mustHaveProp2(self, "totalprice", shangpin)
+      mustHaveProp2(self, "material", shangpin)
+      self.trace["Result"]["yingzhuang"]["details"][name]["detail"].pop();
+    self.trace["Result"]["yingzhuang"]["details"][name].pop("detail")
 
-  def test_yingzhuang(self):
-    xlog("yingzhuang")
+def test_shejifang(self):
+  xlog("shejifang")
 
-  def test_shejifang(self):
-    xlog("shejifang")
-
-  def test_ruanzhuang(self):
-    xlog("ruanzhuang")
+def test_ruanzhuang(self):
+  xlog("ruanzhuang")
+  self.trace["Result"]["ruanzhuang"] = {}
+  ruanzhuang = self.ruanzhuang
+  self.assertIn("totalprice", ruanzhuang)
+  self.assertIn("details", ruanzhuang)
+  details = ruanzhuang["details"]
+  self.trace["Result"]["ruanzhuang"]["details"] = {}
+  for name in details:
+    room = details[name]
+    self.trace["Result"]["ruanzhuang"]["details"][name] = {}
+    self.assertFalse(room == "")
+    mustHaveProp2(self, "totalprice", room)
+    mustHaveProp2(self, "detail", room)
+    room_detail = room["detail"]
+    self.trace["Result"]["ruanzhuang"]["details"][name]["detail"] = []
+    for shangpin in room_detail:
+      self.trace["Result"]["ruanzhuang"]["details"][name]["detail"].append(shangpin["commodity"]);
+      mustHaveProp2(self, "totalprice", shangpin)
+      mustHaveProp2(self, "commodity", shangpin)
 
 def main():
 
