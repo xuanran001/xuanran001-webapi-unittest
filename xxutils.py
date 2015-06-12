@@ -67,12 +67,18 @@ def paste(obj):
     print json_obj
 
     return "http://fpaste.org/%s" % json_obj["result"]["id"]
+
 # object must have property.
 def mustHaveProp(_self, name, item, url):
     msg = "Expect : must have [%s] property\n" % name
     msg += "ID : %s\n" % item['id']
     msg += "URL : %s\n" % url
     _self.assertIn(name, item['details'], msg='{0}'.format(msg))
+
+# object must have property.
+def mustHaveProp2(_self, prop, obj):
+    msg = "Expect : must have [%s] property\n" % prop
+    _self.assertIn(prop, obj, msg='{0}'.format(msg))
 
 def xlog(str):
     logger = logging.getLogger("getdesignlist")

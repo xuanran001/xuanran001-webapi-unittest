@@ -21,6 +21,7 @@ from urllib2 import urlopen
 
 from xxutils import getjson
 from xxutils import mustHaveProp
+from xxutils import mustHaveProp2
 from xxutils import xlog
 from xxutils import replyticket
 from xxutils import paste
@@ -43,86 +44,108 @@ URL = "%s/decorationplan/detail3.html?key=%s&id=%s" %(DOMAIN, KEY, ID)
 
 class common_Tests(unittest.TestCase):
 
-    def test_common(self):
-        xlog( 'test_common' )
-        
-        response = getjson(self, URL)
-        
-        # RESPONSE.Result = {}
+  def setUp(self):
+    xlog("setUp...")
 
-        self.assertIn("Result", response)
-        result = response["Result"]
+    response = getjson(self, URL)
 
-        # RESPONSE.Result.projectinfo = {}
+    # RESPONSE.Result = {}
 
-        self.assertIn("projectinfo", result)
-        result_projectinfo = result["projectinfo"]
+    self.assertIn("Result", response)
+    self.assertIn("projectinfo", response["Result"])
+    self.assertIn("shigong", response["Result"])
+    self.assertIn("Permission", response)
+    self.assertIn("Success", response)
+    self.assertTrue("Success", response)
 
-        # RESPONSE.Result.projectinfo.roominfo = {}
+    self.projectinfo = response["Result"]["projectinfo"]
+    self.shigong = response["Result"]["shigong"]
 
-        self.assertIn("roominfo", result_projectinfo)
-        result_projectinfo_roominfo = result_projectinfo["roominfo"]
+  def test_projectinfo(self):
+    xlog("projectinfo")
+    
+    projectinfo = self.projectinfo
 
-        self.assertIn("ceiling", result_projectinfo_roominfo)
-        self.assertIn("floor", result_projectinfo_roominfo)
+    # RESPONSE.Result.projectinfo.roominfo = {}
 
-        # RESPONSE.Result.projectinfo.roominfo.details = {}
+    self.assertIn("roominfo", projectinfo)
+    projectinfo_roominfo = projectinfo["roominfo"]
 
-        self.assertIn("details", result_projectinfo_roominfo)
-        details = result_projectinfo_roominfo["details"]
+    self.assertIn("ceiling", projectinfo_roominfo)
+    self.assertIn("floor", projectinfo_roominfo)
 
-        self.assertIn("wall", result_projectinfo_roominfo)
+    # RESPONSE.Result.projectinfo.roominfo.details = {}
 
-        self.assertIn("style", result_projectinfo)
-        self.assertIn("name", result_projectinfo)
+    self.assertIn("details", projectinfo_roominfo)
+    details = projectinfo_roominfo["details"]
 
-        # RESPONSE.Permission = {}
+    self.assertIn("wall", projectinfo_roominfo)
 
-        self.assertIn("Permission", response)
+    self.assertIn("style", projectinfo)
+    self.assertIn("name", projectinfo)
 
-        # RESPONSE.Success = bool
 
-        self.assertIn("Success", response)
-        self.assertTrue("Success", response)
+    #for result_item in response['Result']:
+    #    self.assertIn('id', result_item)
+    #
+    #    # RESPONSE.Result[0].details = {}
+    #    
+    #    self.assertIn('details', result_item)
+    #    mustHaveProp(self, 'stylename', result_item, URL)
 
-        #for result_item in response['Result']:
-        #    self.assertIn('id', result_item)
-        #
-        #    # RESPONSE.Result[0].details = {}
-        #    
-        #    self.assertIn('details', result_item)
-        #    mustHaveProp(self, 'stylename', result_item, URL)
-            
+  def test_youhui(self):
+    xlog("youhui")
+
+  def test_shigong(self):
+    xlog("shigong")
+    shigong = self.shigong
+    self.assertIn("totalprice", shigong)
+    self.assertIn("details", shigong)
+    shigong_details = shigong["details"]
+    for name in shigong_details:
+      room = shigong_details[name]
+      self.assertIn("totalprice", room)
+      mustHaveProp2(self, "totalprice", room)
+
+  def test_yingzhuang(self):
+    xlog("yingzhuang")
+
+  def test_shejifang(self):
+    xlog("shejifang")
+
+  def test_ruanzhuang(self):
+    xlog("ruanzhuang")
+
 def main():
 
-    # create logger
-    logger = logging.getLogger('getdesignlist')
-    logger.setLevel(logging.DEBUG)
+  # create logger
+  logger = logging.getLogger("decorationplan.detail3")
+  logger.setLevel(logging.DEBUG)
 
-    # create console handler and set level to debug
-    ch = logging.StreamHandler( sys.__stdout__ ) # Add this
-    ch.setLevel(logging.DEBUG)
+  # create console handler and set level to debug
+  ch = logging.StreamHandler( sys.__stdout__ ) # Add this
+  ch.setLevel(logging.DEBUG)
 
-    # create formatter
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+  # create formatter
+  formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-    # add formatter to ch
-    ch.setFormatter(formatter)
+  # add formatter to ch
+  ch.setFormatter(formatter)
 
-    # add ch to logger
-    logger.addHandler(ch)
+  # add ch to logger
+  logger.addHandler(ch)
 
-    # 'application' code
-    #logger.debug('debug message')
-    #logger.info('info message')
-    #logger.warn('warn message')
-    #logger.error('error message')
-    #logger.critical('critical message')
-    
-    unittest.main()
+  # 'application' code
+  #logger.debug('debug message')
+  #logger.info('info message')
+  #logger.warn('warn message')
+  #logger.error('error message')
+  #logger.critical('critical message')
+  
+  unittest.main()
 
 if __name__ == '__main__':
-    main()
+  main()
 
 # end
 
