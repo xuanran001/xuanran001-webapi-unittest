@@ -36,7 +36,7 @@ sys.setdefaultencoding('utf8')
 KEY = "test"
 DOMAIN = "http://www.xuanran001.com/api"
 ID = "a3960782-c012-4994-8afc-b2950d408769"
-URL = "%s/decorationplan/detail3.html?key=%s&id=%s" %(DOMAIN, KEY, ID)
+URL = "%s/decorationplan/detail3.html?key=%s&id=%s&_1" %(DOMAIN, KEY, ID)
 
 #
 # test
@@ -46,6 +46,8 @@ class common_Tests(unittest.TestCase):
 
   def setUp(self):
     xlog("setUp...")
+
+    print (URL)
 
     response = getjson(self, URL)
 
@@ -60,6 +62,11 @@ class common_Tests(unittest.TestCase):
 
     self.projectinfo = response["Result"]["projectinfo"]
     self.shigong = response["Result"]["shigong"]
+
+    # Trace
+    self.trace = {
+      "Result" : {}
+    }
 
   def test_projectinfo(self):
     xlog("projectinfo")
@@ -98,14 +105,31 @@ class common_Tests(unittest.TestCase):
 
   def test_shigong(self):
     xlog("shigong")
+    self.trace["Result"]["shigong"] = {}
     shigong = self.shigong
     self.assertIn("totalprice", shigong)
     self.assertIn("details", shigong)
     shigong_details = shigong["details"]
+    self.trace["Result"]["shigong"]["details"] = {}
     for name in shigong_details:
       room = shigong_details[name]
-      self.assertIn("totalprice", room)
-      mustHaveProp2(self, "totalprice", room)
+      self.trace["Result"]["shigong"]["details"][name] = {}
+
+      if name == "自定义":
+        pass
+      elif name == "水电及其安装与杂项其他":
+        pass
+      else:
+        # Not empty
+        self.assertFalse(room == "")
+        mustHaveProp2(self, "totalprice", room)
+        mustHaveProp2(self, "detail", room)
+        room_detail = room["detail"]
+        self.trace["Result"]["shigong"]["details"][name]["detail"] = []
+        for gongcheng in room_detail:
+          self.trace["Result"]["shigong"]["details"][name]["detail"].append(gongcheng["name"]);
+          mustHaveProp2(self, "totalprice", gongcheng)
+          mustHaveProp2(self, "name", gongcheng)
 
   def test_yingzhuang(self):
     xlog("yingzhuang")
