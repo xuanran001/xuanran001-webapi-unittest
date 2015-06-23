@@ -34,7 +34,7 @@ import random
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-URL = "http://www.xuanran001.com:8080/content/users.1.json"
+URL = "http://192.168.0.61:8080/content/users.1.json"
 
 #
 # test
