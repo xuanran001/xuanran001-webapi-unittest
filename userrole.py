@@ -50,11 +50,11 @@ class common_Tests(unittest.TestCase):
         except urllib2.HTTPError as e:
             msg = "URL : %s\n" % url
             msg += 'Server return code : %s' % e.code
-            _self.fail(msg)
+            self.fail(msg)
         except urllib2.URLError as e:
-            _self.fail(('Unexpected exception thrown:', e.args))
+            self.fail(('Unexpected exception thrown:', e.args))
         except socket.timeout as e:
-            _self.fail(('Server timeout:', e.args))
+            self.fail(('Server timeout:', e.args))
 
         raw_data = response.read().decode('utf-8')
         json_obj = json.loads(raw_data)
