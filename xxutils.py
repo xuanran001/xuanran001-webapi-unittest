@@ -41,6 +41,8 @@ def getjson(_self, url):
         _self.fail(('Server timeout:', e.args))
         
     raw_data = response.read().decode('utf-8')
+    response.close()
+
     json_obj = json.loads(raw_data)
 
     _self.assertIn('Success', json_obj)
@@ -62,6 +64,8 @@ def paste(obj):
         print 'Server timeout:', e.args
         
     raw_data = response.read().decode('utf-8')
+    response.close()
+
     json_obj = json.loads(raw_data)
 
     print json_obj
