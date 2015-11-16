@@ -30,8 +30,7 @@ from multipartform import MultiPartForm
 #sys.setdefaultencoding('utf8')
 
 KEY = "test"
-DOMAIN = "http://www.xuanran001.com/api"
-URL = "%s/putnewtask.html?key=%s" %(DOMAIN, KEY)
+URL = "http://www.xuanran001.com/d/api/putnewtask.html"
 
 #
 # test
@@ -39,46 +38,50 @@ URL = "%s/putnewtask.html?key=%s" %(DOMAIN, KEY)
 
 class common_Tests(unittest.TestCase):
 
-    def test_1(self):
+  def test_1(self):
 
-        # Create the form with simple fields
-        form = MultiPartForm()
-        form.add_field('umail', '_chenyang_40masols.com')
-        
-        # Add a fake file
-        form.add_file('cankaotu[]', 'cankaotu1.jpg', 
-                      fileHandle=StringIO('spolo'))
-        form.add_file('cankaotu[]', 'cankaotu2.jpg', 
-                      fileHandle=StringIO('spolo'))
-        form.add_file('cankaotu[]', 'cankaotu3.jpg', 
-                      fileHandle=StringIO('spolo'))
-        form.add_file('huxingtu', 'huxingtu.jpg', 
-                      fileHandle=StringIO('spolo'))
+    # get ip addr
+    import socket
+    print socket.gethostbyname('www.xuanran001.com')
 
-        # Build the request
-        request = urllib2.Request(URL)
-        #request.add_header('User-agent', 'PyMOTW (http://www.doughellmann.com/PyMOTW/)')
-        body = str(form)
-        request.add_header('Content-type', form.get_content_type())
-        request.add_header('Content-length', len(body))
-        request.add_data(body)
+    # curl example:
+    # curl -F key=test -F name="方案名称" -F descope="客厅" -F style="欧式" -F spereq="暂无"  -F huxingtu=@huxingtu.jpg www.xuanran001.com/d/api/putnewtask.html
 
-        print
-        print 'OUTGOING DATA:'
-        print request.get_data()
+    # Create the form with simple fields
+    form = MultiPartForm()
+    form.add_field('key', KEY)
+    #form.add_field('umail', '_ceshi87_40wware.org')
+    
+    # Add a fake file
+    #form.add_file('cankaotu[]', 'cankaotu1.jpg', 
+    #              fileHandle=StringIO('spolo'))
+    #form.add_file('cankaotu[]', 'cankaotu2.jpg', 
+    #              fileHandle=StringIO('spolo'))
+    #form.add_file('cankaotu[]', 'cankaotu3.jpg', 
+    #              fileHandle=StringIO('spolo'))
+    form.add_file('huxingtu', 'huxingtu.jpg', 
+                  fileHandle=StringIO('spolo'))
 
-        print
-        print 'SERVER RESPONSE:'
-        print urllib2.urlopen(request).read()
+    # Build the request
+    request = urllib2.Request(URL)
+    #request.add_header('User-agent', 'PyMOTW (http://www.doughellmann.com/PyMOTW/)')
+    body = str(form)
+    request.add_header('Content-type', form.get_content_type())
+    request.add_header('Content-length', len(body))
+    request.add_data(body)
 
+    print
+    print 'OUTGOING DATA:'
+    print request.get_data()
 
-
+    print
+    print 'SERVER RESPONSE:'
+    print urllib2.urlopen(request).read()
 
 def main():
-    unittest.main()
+  unittest.main()
 
 if __name__ == '__main__':
-    main()
+  main()
 
 # end
-
